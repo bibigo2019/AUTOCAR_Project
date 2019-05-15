@@ -91,15 +91,16 @@
 	</div>
 	
 	<div id="info-box"></div>
-	<div id="chart1" style="padding-top:50px;"></div>
+	<div id="seoul-map" style="padding-top:50px;"></div>
 </div>
 
 
 <script>
-	$(document).ready(function() {
+	$(function () {
+		// app init
 		App.init();
 
-		// Count - up 처리
+		// 적발건수 couting 처리
 		$('.count-up').each(function() {
 			var target = this;
 			var endVal = parseInt($(this).attr('data-endVal'));
@@ -107,16 +108,16 @@
 			theAnimation.start();
 		});
 		
+		// map event 
 		var allStates = $("#map").find("path");
 		
+		// map hover event 
 		allStates.live("hover", function() {
 			$(this).parent().find("path").attr("class","municipality");
 			$(this).attr("class", "municipality on");
-			
-			//$('#info-box').css('display','block');
-			//$('#info-box').html($(this).data('info'));
 		});
 		
+		// map click event 
 		allStates.live("click", function() {
 			$('#info-box').css('display','block');
 			$('#info-box').html($(this).data('info'));
@@ -124,32 +125,31 @@
 			var pos = $(this).data('loc').split(',');
 			var x = (pos[0]/1) + 100;
 			var y = pos[1] - 80;
-			console.log(x+","+y);
+			
 			$('#info-box').css('top',y+"px");
 			$('#info-box').css('left',x+"px");
-			
 		});
+		// End of map event
 		
 		 var a = "#00acac", b = "#348fe2";
-		    Morris.Donut({
-		        element: "visitors-donut-chart",
-		        data: [{label: "강남구", value: 900}, {label: "동작구", value: 1200}],
-		        colors: [a, b],
-		        labelFamily: "Open Sans",
-		        labelColor: "rgba(255,255,255,0.4)",
-		        labelTextSize: "12px",
-		        backgroundColor: "#242a30"
-		    })
-		
-	
+	    Morris.Donut({
+	        element: "visitors-donut-chart",
+	        data: [{label: "강남구", value: 900}, {label: "동작구", value: 1200}],
+	        colors: [a, b],
+	        labelFamily: "Open Sans",
+	        labelColor: "rgba(255,255,255,0.4)",
+	        labelTextSize: "12px",
+	        backgroundColor: "#242a30"
+	    });
 	});
 	
+	// svg map width and height
 	var width = 1000;
 	var height = 700;
-
-	var svg = d3.select("#chart1").append("svg")
+	
+	// create map
+	var svg = d3.select("#seoul-map").append("svg")
 		.attr("width", width)
-		.attr("class", "seoul")
 		.attr("height", height);
 	
 	var map = svg.append("g").attr("id", "map");
@@ -161,7 +161,6 @@
 
 	var path = d3.geo.path().projection(projection);
 	
-	
 	d3.json("${contextPath}/resources/seoul_municipalities_topo_simple.json", function(error, data) {
 		var features = topojson.feature(data, data.objects.seoul_municipalities_geo).features;
 		
@@ -170,14 +169,11 @@
 			.enter().append("path")
 			.attr("class", "municipality")
 			.attr("id",function(d) { return d.properties.SIG_ENG_NM; })
-			.attr("data-info",function(d) { 
-				
-				var district = d.properties.SIG_KOR_NM;
+			.attr("data-info",function(d) {
 				
 				return `<div class="col-md-12 col-sm-12">
 						<div class="widget widget-stats bg-purple">
 						<div class="stats-info">
-							<h4>${district}</h4>
 							<p>10,000</p>
 						</div>
 						<div class="stats-link">
@@ -187,7 +183,6 @@
 				</div>`; 
 				})
 			.attr("data-loc", function(d) { return path.centroid(d) ; })
-			//.attr("class", function(d) { return "municipality c" + d.properties.SIG_CD })
 			.attr("d", path);
 		
 		map.selectAll("text")

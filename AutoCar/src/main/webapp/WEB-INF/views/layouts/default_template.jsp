@@ -10,7 +10,7 @@
 <!--<![endif]-->
 <head>
 <meta charset="utf-8" />
-<title>Color Admin | Dashboard v2</title>
+<title>불법주차단속시스템</title>
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 	name="viewport" />
