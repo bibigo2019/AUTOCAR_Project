@@ -18,5 +18,10 @@
 	<definition name="sample/sample" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/sample/sample.jsp" />
 	</definition>
+	
+	<!-- 샘플 -->
+	<definition name="*/*" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
 
 </tiles-definitions>
