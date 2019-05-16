@@ -82,8 +82,7 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-<script
-	src="${contextPath}/resources/assets/plugins/morris/raphael.min.js"></script>
+<script src="${contextPath}/resources/assets/plugins/morris/raphael.min.js"></script>
 <script src="${contextPath}/resources/assets/plugins/morris/morris.js"></script>
 <script
 	src="${contextPath}/resources/assets/plugins/jquery-jvectormap/jquery-jvectormap.min.js"></script>
@@ -95,7 +94,8 @@
 	src="${contextPath}/resources/assets/plugins/gritter/js/jquery.gritter.js"></script>
 <script src="${contextPath}/resources/assets/js/dashboard-v2.min.js"></script>
 <script src="${contextPath}/resources/assets/js/apps.min.js"></script>
-<script src="${contextPath}/resources/assets/js/countUp.min.js"></script>
+<script src="${contextPath}/resources/js/common.js"></script>
+
 <!-- ================== END PAGE LEVEL JS ================== -->
 </head>
 <body>

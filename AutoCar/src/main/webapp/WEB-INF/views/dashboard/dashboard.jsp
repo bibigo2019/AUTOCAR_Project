@@ -4,7 +4,8 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script src="https://www.kaptest.com/static/js/jquery.qtip.js"></script>
-
+<script src='https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.8.2/countUp.min.js'></script>
+  
 <style>
 	.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
 	    border-color: none !important;
@@ -47,8 +48,7 @@
 	}
 	
 	svg .on {
-	  fill: #a7aaad !important;
-	  stroke-width: 2 !important;
+	  stroke-width: 4 !important;
 	}
 	#info-box {
 	  display: none;
@@ -76,15 +76,14 @@
 	<div class="col-md-3 col-sm-3 m-r-20" style="position:absolute;right:0px;text-align:right;">
 		<div class="widget widget-stats bg-black">
 			<div class="stats-title f-s-15">오늘의 적발건수</div>
-			<div class="stats-number" style="font-size:45px;"><p class="count-up" data-endVal="534500">0</p></div>
+			<div class="stats-number" style="font-size:45px;"><p id="total" class="count-up countupthis" numx="70" >0</p></div>
 			<div class="stats-progress progress">
 				<div class="progress-bar" style="width: 100%;"></div>
 			</div>
 			<div class="stats-desc">전일 대비 54.9% <i class="fa fa-caret-up"> </i></div>
 		</div>
 		<div style="text-align:left;margin-left:100px;">
-			<p><i class="fa f-s-15 fa-square text-primary"></i> <span class=" f-s-12 text-white">매우 양호 (00 ~ 05)</span></p>
-			<p><i class="fa f-s-15 fa-square text-success"></i> <span class=" f-s-12 text-white">약간 양호 (10 ~ 15)</span></p>
+			<p><i class="fa f-s-15 fa-square" style="color : #FFC107 !important;"></i> <span class=" f-s-12 text-white">약간 양호 (10 ~ 15)</span></p>
 			<p><i class="fa f-s-15 fa-square text-warning"></i> <span class=" f-s-12 text-white">약간 위험 (15 ~ 20)</span></p>
 			<p><i class="fa f-s-15 fa-square text-danger"></i> <span class=" f-s-12 text-white">매우 위험 (20 ~ )</span></p>
 		</div>
@@ -94,19 +93,121 @@
 	<div id="seoul-map" style="padding-top:50px;"></div>
 </div>
 
-
 <script>
+
+	var data;
+	var donut=[];
+	
+	var lv1 = 10;
+	var lv2 = 15;
+	var lv3 = 20;
+
+	 var options = {  
+       useEasing: true,
+         useGrouping: true,
+         separator: ',',
+         decimal: '.',
+         prefix: '',
+         suffix: ''
+     };
+	
+	function infoBox(sigId) {
+		var obj = data.filter(function (obj) { return obj.sigId == sigId })[0];
+		var cnt = obj.parkCnt;
+		
+		return '<div class="col-md-12 col-sm-12">'
+			+'<div class="widget widget-stats" style="background:#666;border:2px solid white">'
+			+'<div class="stats-info">'
+			+'<h4>'+obj.sigKorNm+'</h4>'
+			+'<p>'+formatNumber(cnt)+'</p>'
+			+'</div>'
+			+'<div class="stats-link">'
+			+'<a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>'
+			+'</div>'
+			+'</div>'
+			+'</div>`';
+	}
+	
+	function setMapColor() {
+		
+		data.forEach(function(obj) {
+			  var cnt = obj.parkCnt;
+			  var color;
+			  
+			  if(cnt < lv1) { color = '#5e6b77'; }
+			  else if(cnt < lv2 ) { color = '#FFC107'; }
+			  else if ( cnt < lv3) { color = '#f59c1a'; }
+			  else { color = '#cc4d4b'; }
+			  
+			  $("#"+obj.sigId).css('fill',color);
+		});
+	}
+
+	var colors=[
+		
+			];
+	
+	console.log("@@@!#!");
+	var chart = Morris.Donut({
+        element: "visitors-donut-chart",
+        data: [{label : "efefef", value: 12}],
+        colors: [colors],
+        labelFamily: "Open Sans",
+        labelColor: "rgba(255,255,255,0.4)",
+        labelTextSize: "12px",
+        backgroundColor: "#242a30"
+    });
+	
+	function getData(){
+		$.ajax({ 
+			url : `${contextPath}/dashboard`, 
+			type : 'post',
+			dataType : 'json',
+			cache : false, 
+			async: false,
+			success : function(d) {
+				data = d.rs;
+				
+				var cnt = 0;
+				
+				var donut = [];
+				
+				data.forEach(function(obj) {
+					cnt += obj.parkCnt;
+					labelInfo = new Object();
+					labelInfo.label = obj.sigKorNm;
+					labelInfo.value = obj.parkCnt;
+					donut.push(labelInfo);
+				});
+				
+				chart.setData(donut);
+				
+				$('.countupthis').attr('numx',cnt);
+				
+				$('.countupthis').each(function() {
+			        var num = $(this).attr('numx'); //end count
+			        var nuen = $(this).text();
+			        if (nuen === "") {
+			          nuen = 0;
+			        }
+			        var counts = new CountUp(this, nuen, num, 0, 1.5, options);
+			        counts.start();
+			      });
+				
+				setMapColor();
+				setTimeout(getData,1000);
+			}, 
+			error : function(xhr, statusText, errorThrown) { 
+				console.log(`\${statusText} - \${xhr.status} , \$errorThrown`); 
+			}
+		}); 
+	}
+
 	$(function () {
 		// app init
 		App.init();
-
-		// 적발건수 couting 처리
-		$('.count-up').each(function() {
-			var target = this;
-			var endVal = parseInt($(this).attr('data-endVal'));
-			theAnimation = new countUp(target, 0, endVal, 0, 0.7);
-			theAnimation.start();
-		});
+		
+		getData();
 		
 		// map event 
 		var allStates = $("#map").find("path");
@@ -115,12 +216,9 @@
 		allStates.live("hover", function() {
 			$(this).parent().find("path").attr("class","municipality");
 			$(this).attr("class", "municipality on");
-		});
-		
-		// map click event 
-		allStates.live("click", function() {
+			
 			$('#info-box').css('display','block');
-			$('#info-box').html($(this).data('info'));
+			$('#info-box').html(infoBox($(this).data('info')));
 			
 			var pos = $(this).data('loc').split(',');
 			var x = (pos[0]/1) + 100;
@@ -129,18 +227,15 @@
 			$('#info-box').css('top',y+"px");
 			$('#info-box').css('left',x+"px");
 		});
+		
+		// map click event 
+		allStates.live("click", function() {
+			
+		});
 		// End of map event
 		
-		 var a = "#00acac", b = "#348fe2";
-	    Morris.Donut({
-	        element: "visitors-donut-chart",
-	        data: [{label: "강남구", value: 900}, {label: "동작구", value: 1200}],
-	        colors: [a, b],
-	        labelFamily: "Open Sans",
-	        labelColor: "rgba(255,255,255,0.4)",
-	        labelTextSize: "12px",
-	        backgroundColor: "#242a30"
-	    });
+		
+	
 	});
 	
 	// svg map width and height
@@ -168,20 +263,8 @@
 			.data(features)
 			.enter().append("path")
 			.attr("class", "municipality")
-			.attr("id",function(d) { return d.properties.SIG_ENG_NM; })
-			.attr("data-info",function(d) {
-				
-				return `<div class="col-md-12 col-sm-12">
-						<div class="widget widget-stats bg-purple">
-						<div class="stats-info">
-							<p>10,000</p>
-						</div>
-						<div class="stats-link">
-							<a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
-						</div>
-					</div>
-				</div>`; 
-				})
+			.attr("id",function(d) { return d.properties.SIG_CD; })
+			.attr("data-info",function(d) { return d.properties.SIG_CD; })
 			.attr("data-loc", function(d) { return path.centroid(d) ; })
 			.attr("d", path);
 		

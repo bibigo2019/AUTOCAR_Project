@@ -1,7 +1,9 @@
 package edu.autocar.dashboard.dao;
 
-import edu.autocar.sample.model.SampleVO;
+import java.util.List;
+
+import edu.autocar.dashboard.model.TodayParkInfoVO;
 
 public interface DashboardDao {
-	SampleVO select(Integer boardId) throws Exception;
+	List<TodayParkInfoVO> selectDashboard() throws Exception; 
 }
