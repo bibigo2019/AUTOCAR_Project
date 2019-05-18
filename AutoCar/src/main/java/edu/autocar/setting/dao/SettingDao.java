@@ -1,12 +1,9 @@
-package edu.autocar.car.service;
+package edu.autocar.setting.dao;
 
 import java.util.List;
 
 import edu.autocar.dashboard.model.TodayParkInfoVO;
-import edu.autocar.sample.model.SampleVO;
 
-public interface CarService {
-	
+public interface SettingDao {
 	List<TodayParkInfoVO> selectDashboard() throws Exception; 
-	
 }
