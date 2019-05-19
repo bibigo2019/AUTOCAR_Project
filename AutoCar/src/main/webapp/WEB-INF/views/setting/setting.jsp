@@ -42,7 +42,7 @@
 				<h4 class="panel-title">Viewer</h4>
 			</div>
 			<div class="panel-body">
-				<img src="camera/1" width="640" />
+				<img id="video" src="${contextPath}/resources/images/no-image.png" width="640" />
 			</div>
 		</div>
 	</div>
@@ -58,6 +58,7 @@
 			
 			<div class="form-group">
 				<label class="col-md-3 control-label text-white">Status</label>
+				<input type="hidden" id="refresh-time"/>
 				<div id="status-pan" class="col-md-9" style="padding-bottom: 0px;padding-top: 20px;">
 					<i class="fa fa-unlink f-s-18 text-danger"> </i> Disconnected
 				</div>
@@ -112,7 +113,12 @@
 <script src="${contextPath}/resources/assets/plugins/switchery/switchery.min.js"></script>
 <script src="${contextPath}/resources/assets/js/form-slider-switcher.demo.min.js"></script>	
 <script>
-
+	
+	var update = new Date();
+	
+	Date.prototype.timeNow = function () {
+	    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+	}
 	
 	function clear() {
 		$("#logger").empty();
@@ -148,39 +154,8 @@
 	function setStatus(isConnected) {
 		var connect = `<i class="fa fa-chain f-s-18 text-primary"> </i> Connected`;
 		var disconnect = `<i class="fa fa-unlink f-s-18 text-danger"> </i> Disconnected`;
-		
-		$("#status-pan").html(isConnected == 1 ? connect : disconnect);
+		$("#status-pan").html(isConnected == 1 ? connect : disconnect);		
 	}
-	
-	
-	
-	// 키보드 이벤트 처리
-	document.onkeyup = function(e) {
-		if($("#auto-mode").is(":checked")) return ;
-		
-		switch(e.which) {
-		case 32: // space
-			manipulate('btn-stop');
-			$("#btn-stop").click();
-			break;
-		case 37: // left
-			manipulate('btn-left');
-			$("#btn-left").click();
-			break;
-		case 38: // up
-			manipulate('btn-up');
-			$("#btn-up").click();
-			break;
-		case 39: // right
-			manipulate('btn-right');
-			$("#btn-right").click();
-			break;
-		case 40: // down
-			manipulate('btn-down');
-			$("#btn-down").click();
-			break;
-		}
-	};
 	
 	$(function () {
 		App.init();
@@ -191,7 +166,24 @@
 			return;
 		}
 		
+		// Connection check
+		setInterval(function () {
+			// connected
+			if(Math.abs(update - new Date()) > 2000) {
+				setStatus(0);
+				$("#video").attr('src', '${contextPath}/resources/images/no-image.png');
+			}
+			else {
+				if ($("#video").attr('src') != 'camera/1') {
+					$("#video").attr('src', 'camera/1');
+				}
+			}
+		}, 1000);
+		
 		$("#auto-mode").change(function () {
+			
+			if ($("#video").attr('src') != 'camera/1') return ;
+			
 			autoMode = 0;
 			direction = '';
 			if($(this).is(":checked")) {
@@ -237,7 +229,7 @@
 		}
 		
 		socket.onmessage = function(msg){
-			console.log('message : ', msg.data);
+			//console.log('message : ', msg.data);
 			data = JSON.parse(msg.data)
 			if(data.msgType=="STATUS"){
 				
@@ -248,9 +240,13 @@
 				setStatus(data.connected);
 			}
 			else if(data.msgType=="LOG"){
-				$("#logger").append(data.content+"<br>");
+				
+				var newDate = new Date();
+				$("#logger").append("["+newDate.timeNow()+"] "+data.content+"<br>");
 				updateScroll();
 			}
+			update = new Date();
+			
 		}
 		
 		socket.onclose = function(){
@@ -263,8 +259,8 @@
 		
 		$('.btn-dir').click(function(){
 			
-			// 자율 주행 모드 시, 수동 조작 불가
-			if($("#auto-mode").is(":checked")) return ;
+			// 자율 주행 모드 혹은 서버와의 연결 안되어있을 때, 수동 조작 불가
+			if($("#auto-mode").is(":checked") || $("#video").attr('src') != 'camera/1') return ;
 			
 			direction = $(this).data('direction');
 			setDirection(direction);
@@ -282,4 +278,34 @@
 		* End of websocket 
 		*/
 	});
+	
+	// 키보드 이벤트 처리
+	document.onkeyup = function(e) {
+		if($("#auto-mode").is(":checked") || $("#video").attr('src') != 'camera/1') return ;
+		
+		switch(e.which) {
+		case 32: // space
+			manipulate('btn-stop');
+			$("#btn-stop").click();
+			break;
+		case 37: // left
+			manipulate('btn-left');
+			$("#btn-left").click();
+			break;
+		case 38: // up
+			manipulate('btn-up');
+			$("#btn-up").click();
+			break;
+		case 39: // right
+			manipulate('btn-right');
+			$("#btn-right").click();
+			break;
+		case 40: // down
+			manipulate('btn-down');
+			$("#btn-down").click();
+			break;
+		}
+	};
+	
+	
 </script>
