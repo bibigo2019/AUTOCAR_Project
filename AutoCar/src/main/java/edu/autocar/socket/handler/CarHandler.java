@@ -23,6 +23,9 @@ public class CarHandler extends TextWebSocketHandler{
 	//CONTROL Map
 	Map<Integer, List<WebSocketSession>> cMap = Collections.synchronizedMap(new HashMap<>());
 	
+	//DETECTION Map
+	Map<Integer, List<WebSocketSession>> dMap = Collections.synchronizedMap(new HashMap<>());
+	
 	//LOG Map
 	Map<Integer, List<WebSocketSession>> lMap = Collections.synchronizedMap(new HashMap<>());
 	
@@ -76,7 +79,21 @@ public class CarHandler extends TextWebSocketHandler{
 				}
 			}
 			break;
+		
+		case "DETECTION_SUB":
+			addDetectionObserver(target, session);
+			
+			break;
+		case "DETECTION":
+			list = dMap.get(target);
+			if(list != null) {
+				for(WebSocketSession s : list) {
+					s.sendMessage(message);
+				}
+			}
+			break;
 		}
+		
 	}
 
 	void addPositionObserver(int target, WebSocketSession session) {
@@ -107,6 +124,16 @@ public class CarHandler extends TextWebSocketHandler{
 		list.add(session);
 	}
 	
+	void addDetectionObserver(int target, WebSocketSession session) {
+		List<WebSocketSession> list = dMap.get(target);
+		if(list==null) {
+			list = new LinkedList<>();
+			dMap.put(target, list);
+		}
+		list.add(session);
+	}
+	
+	
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -131,6 +158,12 @@ public class CarHandler extends TextWebSocketHandler{
 		
 		for(int target : lMap.keySet()) {
 			List<WebSocketSession> list = lMap.get(target);
+			if(list.remove(session))
+				break;
+		}
+		
+		for(int target : lMap.keySet()) {
+			List<WebSocketSession> list = dMap.get(target);
 			if(list.remove(session))
 				break;
 		}
