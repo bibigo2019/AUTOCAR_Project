@@ -31,6 +31,8 @@
 <h1 class="page-header" style="color:white;">자율주행 설정 <small>Autonomous car manipulation</small></h1>
 <!-- end page-header -->
 
+<img src="camera/1" width="640" />
+
 <div class="row">
 	<div class="col-md-8 col-sm-12" style="width:690px;">
 		<div class="panel panel-inverse">
@@ -170,7 +172,7 @@
 		setInterval(function () {
 			// connected
 			if(Math.abs(update - new Date()) > 2000) {
-				setStatus(0);
+				//setStatus(0);
 				$("#video").attr('src', '${contextPath}/resources/images/no-image.png');
 			}
 			else {
@@ -209,7 +211,7 @@
 		/*
 		* car control & status websocket 
 		*/
-		var socket = new WebSocket("ws://localhost/autocar/car");
+		var socket = new WebSocket("ws://70.12.109.136/autocar/car");
 		
 		socket.onopen = function(){
 			console.log('websocket is connected');

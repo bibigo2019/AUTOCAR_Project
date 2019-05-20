@@ -159,7 +159,7 @@
     });
 	
 	function getData(){
-		$.ajax({ 
+		$.ajax({
 			url : `${contextPath}/dashboard`, 
 			type : 'post',
 			dataType : 'json',
