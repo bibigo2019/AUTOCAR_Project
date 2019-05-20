@@ -162,7 +162,7 @@ public class CarHandler extends TextWebSocketHandler{
 				break;
 		}
 		
-		for(int target : lMap.keySet()) {
+		for(int target : dMap.keySet()) {
 			List<WebSocketSession> list = dMap.get(target);
 			if(list.remove(session))
 				break;
