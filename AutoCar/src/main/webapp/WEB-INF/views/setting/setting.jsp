@@ -31,8 +31,6 @@
 <h1 class="page-header" style="color:white;">자율주행 설정 <small>Autonomous car manipulation</small></h1>
 <!-- end page-header -->
 
-<img src="camera/1" width="640" />
-
 <div class="row">
 	<div class="col-md-8 col-sm-12" style="width:690px;">
 		<div class="panel panel-inverse">
