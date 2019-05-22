@@ -16,25 +16,25 @@ import edu.autocar.monitor.broker.MjpegBroker;
 
 @Controller
 public class CameraController {
-	
+
 	@GetMapping("/monitor")
 	public void monitor() {
-		
+
 	}
-	
+
 	@GetMapping("/camera")
 	public void camera() {
-		
+
 	}
-	
+
 	@Autowired
 	MjpegBroker broker;
-	
+
 	@PostMapping("/camera/{cameraId}")
 	@ResponseBody
 	public boolean postCamera(@PathVariable("cameraId") int cameraId, @RequestParam("image") MultipartFile image) {
 		try {
-			//System.out.println(cameraId);
+			// System.out.println(cameraId);
 			broker.update(cameraId, image.getBytes());
 			return true;
 		} catch (IOException e) {
@@ -42,13 +42,13 @@ public class CameraController {
 			return false;
 		}
 	}
-	
+
 	@GetMapping("/camera/{cameraId}")
 	public String camera(@PathVariable("cameraId") int cameraId, Model model) {
 		model.addAttribute("deviceId", cameraId);
 		return "camera";
 	}
-	
+
 	@GetMapping("/ipcam")
 	public void ipcam() {
 	}
