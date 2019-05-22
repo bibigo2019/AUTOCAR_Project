@@ -34,7 +34,6 @@ public class CameraController {
 	@ResponseBody
 	public boolean postCamera(@PathVariable("cameraId") int cameraId, @RequestParam("image") MultipartFile image) {
 		try {
-			// System.out.println(cameraId);
 			broker.update(cameraId, image.getBytes());
 			return true;
 		} catch (IOException e) {
@@ -43,8 +42,11 @@ public class CameraController {
 		}
 	}
 
+
+
 	@GetMapping("/camera/{cameraId}")
 	public String camera(@PathVariable("cameraId") int cameraId, Model model) {
+
 		model.addAttribute("deviceId", cameraId);
 		return "camera";
 	}

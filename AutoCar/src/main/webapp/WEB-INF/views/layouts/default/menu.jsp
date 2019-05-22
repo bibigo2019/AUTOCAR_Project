@@ -6,18 +6,6 @@
 <div id="sidebar" class="sidebar">
 	<!-- begin sidebar scrollbar -->
 	<div data-scrollbar="true" data-height="100%">
-		<!-- begin sidebar user -->
-		<ul class="nav">
-			<li class="nav-profile">
-				<div class="image">
-					<a href="javascript:;"></a>
-				</div>
-				<div class="info">
-					Sean Ngu <small>Front end developer</small>
-				</div>
-			</li>
-		</ul>
-		<!-- end sidebar user -->
 		<!-- begin sidebar nav -->
 		<ul class="nav">
 			<li class="nav-header">Navigation</li>

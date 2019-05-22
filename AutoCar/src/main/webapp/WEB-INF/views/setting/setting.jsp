@@ -170,7 +170,7 @@
 		setInterval(function () {
 			// connected
 			if(Math.abs(update - new Date()) > 2000) {
-				setStatus(0);
+				//setStatus(0);
 				$("#video").attr('src', '${contextPath}/resources/images/no-image.png');
 			}
 			else {
@@ -209,7 +209,7 @@
 		/*
 		* car control & status websocket 
 		*/
-		var socket = new WebSocket("ws://localhost/autocar/car");
+		var socket = new WebSocket("ws://70.12.109.136/autocar/car");
 		
 		socket.onopen = function(){
 			console.log('websocket is connected');

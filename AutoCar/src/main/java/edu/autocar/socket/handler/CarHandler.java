@@ -36,7 +36,7 @@ public class CarHandler extends TextWebSocketHandler{
 		//System.out.println(rcvMsg);
 		Gson g = new Gson();
 		Message carMsg = g.fromJson(rcvMsg, Message.class);
-		System.out.println(carMsg);
+		System.out.println(rcvMsg);
 		int target = carMsg.getTarget();
 
 		List<WebSocketSession> list;
