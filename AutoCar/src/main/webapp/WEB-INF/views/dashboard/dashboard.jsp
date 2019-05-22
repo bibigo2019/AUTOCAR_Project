@@ -122,7 +122,6 @@
 			+'<p>'+formatNumber(cnt)+'</p>'
 			+'</div>'
 			+'<div class="stats-link">'
-			+'<a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>'
 			+'</div>'
 			+'</div>'
 			+'</div>`';
