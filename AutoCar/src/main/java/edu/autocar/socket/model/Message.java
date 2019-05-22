@@ -15,4 +15,13 @@ public class Message {
 	private String direction;	// 방향
 	private String content;		// log
 	
+	private int stop;
+	private int truck;
+	private int noparking;
+	private int bus;
+	private int green;
+	private int left;
+	private int red;
+	private int yellow;
+	
 }
