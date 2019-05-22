@@ -12,9 +12,6 @@
 </h1>
 <!-- end page-header -->
 
-<script>
-	console.log('${detailList}');
-</script>
 
 <div class="container">
 	<!-- begin #content -->
@@ -30,35 +27,27 @@
 					</div>
 					<div class="panel-body">
 						<table id="data-table" class="table table-striped table-bordered">
-
 							<thead>
 								<tr role="row">
-									<th>ID</th>
-									<th>District</th>
-									<th>Car Id</th>
-									<th>ParkDate</th>
+									<th>번홓</th>
+									<th>적발 장소</th>
+									<th>차량 번호</th>
+									<th>적발 일시</th>
 								</tr>
 							</thead>
-
 							<tbody>
 								<c:forEach var="detailVO" items="${pi.list}">
 									<tr>
 										<td>${detailVO.id}</td>
-										<td>${detailVO.district}</td>
+										<td>서울시 ${detailVO.district}</td>
 										<td>${detailVO.carId}</td>
 										<td><fmt:formatDate value="${detailVO.parkDate}"
-												pattern="yyyy년  MM월  dd일  mm분  ss초" /></td>
+												pattern="yyyy-MM-dd  HH:mm:ss" /></td>
 										<%-- <td>${detailVO.img}</td> --%>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
-
-						<nav align="center">
-							<ul class="pagination">
-								<iot:pagination pageInfo="${pi}" />
-							</ul>
-						</nav>
 					</div>
 				</div>
 				<!-- end panel -->
@@ -70,7 +59,14 @@
 	<!-- end #content -->
 
 
-
+<script src="${contextPath}/resources/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="${contextPath}/resources/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="${contextPath}/resources/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script>
+	$(function () {
+		$('#data-table').DataTable();
+	});
+</script>
 
 
 

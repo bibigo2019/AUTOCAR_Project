@@ -4,10 +4,11 @@
 
 <mapper namespace="edu.autocar.detail.dao.DetailDao">
 	<select id="getPage" resultType="DetailVO">
-		select id, district, car_id,
+		select A.id, B.CODE_VAL DISTRICT, car_id,
 		park_date
-		from TB_PARKING_INFO
-		where id between #{start} and #{end}
+		from TB_PARKING_INFO A , TB_COMMON_CD B 
+		    WHERE B.CODE_GB = 'CITY_INFO'
+		    AND A.DISTRICT = B.CODE
 		order by id desc
 	</select>
 
