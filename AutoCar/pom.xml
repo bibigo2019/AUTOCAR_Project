@@ -8,7 +8,7 @@
 	<name>AutoCar</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
-	
+
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.1.0.RELEASE</org.springframework-version>
@@ -16,14 +16,14 @@
 		<org.slf4j-version>1.7.26</org.slf4j-version>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>ojdbc</id>
 			<url>http://www.datanucleus.org/downloads/maven2/</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -43,6 +43,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
 
 		<!-- AspectJ -->
 		<dependency>
@@ -169,7 +175,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -186,7 +192,7 @@
 			<version>1.18.6</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
@@ -207,7 +213,7 @@
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.8</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>

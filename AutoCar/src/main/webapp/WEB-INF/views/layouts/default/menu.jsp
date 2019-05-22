@@ -11,7 +11,7 @@
 			<li class="nav-header">Navigation</li>
 			<li><a href="dashboard"><i class="fa fa-dashboard"></i></a></li>
 			<li><a href="setting"><i class="fa fa-cab"></i></a></li>
-			<li><a href="#"><i class="fa fa-calendar"></i></a></li>
+			<li><a href="${contextPath}/detail"><i class="fa fa-calendar"></i></a></li>
 			<!-- begin sidebar minify button -->
 			<!-- <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li> -->
 			<!-- end sidebar minify button -->

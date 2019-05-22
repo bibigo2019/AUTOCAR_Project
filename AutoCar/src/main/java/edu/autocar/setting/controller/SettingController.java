@@ -13,11 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 public class SettingController {
 	@Autowired
 	SettingService service;
-	
+
 	@GetMapping("/setting")
 	public String view(Model model) throws Exception {
-		
+
 		return "setting/setting";
 	}
-	
+
 }
