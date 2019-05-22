@@ -29,6 +29,7 @@ public class CameraController {
 
 	@Autowired
 	MjpegBroker broker;
+	
 
 	@PostMapping("/camera/{cameraId}")
 	@ResponseBody
